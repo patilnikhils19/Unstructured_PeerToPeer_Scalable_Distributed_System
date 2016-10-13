@@ -63,6 +63,28 @@ def Register():
        logging.info('Registration Successsful')
        connection = data.split()
 
+       i = int(connection[3])
+      
+       if (i != 0 and i < 100) :
+         # table = Table()
+          number = 1
+          z = 3
+          y = 4
+          while (number <= i):
+             # print number
+              table.addRow({'Index': number,'IP': connection[z+number], 'Port': connection[y+number]})
+              z = z+1
+              y = y+1
+              row = table.getrowbyindex(number-1)
+              logging.info('Registred  IP Recieved From The Bootstrap')
+              logging.info(row)
+             # print row
+              join(number)
+              number = number +1
+    else :
+       print "Regisration with Bootstrap Server is unsuccessful, Please try again!\n"
+       logging.info('Registration failed with the bootstrap')
+
 
 if __name__ == '__main__':
 
