@@ -24,6 +24,33 @@ class Table(object):
         return self.rows[Index]
 
 
+def Register():
+
+    
+    if not args.username :
+       username = raw_input("Please Give Username for registering with the Bootstrap Server:> ") #Get username from the server
+    else :
+       username = args.username
+
+    """Formation of the string according to given protocol for the bootstrap server"""
+
+    protocol = "REG"
+    List = [protocol,host1,port1,username]
+    List = ' '.join(map(str, List))
+    a = len(List)+5
+    c = "{0:0=4d}".format(a)
+    List1 = [c,protocol,host1,port1,username]
+    List1 = ' '.join(map(str, List1))
+    List1 = str(List1)
+    logging.info('Sending Protocol Message For Regestration to Bootstrap')
+    logging.info(List1)
+   # print List1
+   # print type(List1)
+   # print server
+    print ("registering with the Bootstrap Server\n")
+
+    sock.sendto(List1, (server))#Send Request to server
+
 
 if __name__ == '__main__':
 
