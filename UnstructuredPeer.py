@@ -132,5 +132,6 @@ if __name__ == '__main__':
                      file.truncate()
                 logging.info('The Node has started')
 		Register()
+		start_new_thread(thread,(sock,)) #Create new threads for connecting clients
 
 
