@@ -30,4 +30,17 @@ if __name__ == '__main__':
                  print("Need Bootstrap Server Port Number")
 
           else :
+                port1 = args.port
+                host = args.bootstrapip #Get Bootstrap IP from arguments
+                sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)#create socket
+                h = socket.gethostname() #Get host name
+                host1 = socket.gethostbyname(h) #Get Host IP address
+                self = (host1,port1)
+                server = (host,args.bootstrapport)
+                try:
+                        sock.bind((host1, port1))
+                        print 'bind complete'
+                except socket.error , msg:
+                        print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
+                        sys.exit()
 
