@@ -50,6 +50,18 @@ def Register():
     print ("registering with the Bootstrap Server\n")
 
     sock.sendto(List1, (server))#Send Request to server
+	
+    data, address = sock.recvfrom(1024)#Recieve data from server
+
+    print "The response from the Bootstrap\n" + str(data)
+
+    logging.info('Recieved Protocol Message From Bootstrap')
+    logging.info(str(data))
+
+    if (data.find("REGOK") != -1) :
+       print "Registration Successful with the Bootstrap Server\n"
+       logging.info('Registration Successsful')
+       connection = data.split()
 
 
 if __name__ == '__main__':
