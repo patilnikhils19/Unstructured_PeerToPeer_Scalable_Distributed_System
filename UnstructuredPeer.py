@@ -11,6 +11,20 @@ import datetime
 import logging
 
 
+class Table(object):
+    def __init__(self):
+        self.rows =  []
+        self.IPA = {} # look for the IP Adress
+
+    def addRow(self, row):
+        self.rows.append(row)
+        self.IPA[row['IP']] = row
+
+    def getrowbyindex(self, Index):
+        return self.rows[Index]
+
+
+
 if __name__ == '__main__':
 
           parser = argparse.ArgumentParser()#Define argument parser
