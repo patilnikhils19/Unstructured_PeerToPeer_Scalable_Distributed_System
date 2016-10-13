@@ -58,3 +58,16 @@ if __name__ == '__main__':
                         print 'Bind failed. Error Code : ' + str(msg[0]) + ' Message ' + msg[1]
                         sys.exit()
 
+		table = Table()
+                table1 = Table()
+                LAT = []
+                HOP = []
+                DELE = []
+                flag = 0
+                T1 = 0.0
+                T2 = 0.0
+                logging.basicConfig(filename='log.log',filemode='a',format='%(asctime)s,%(msecs)d %(name)s %(levelname)s %(message)s',datefmt='%m/%d/%Y %I:%M:%S %P',level=logging.DEBUG)
+                with open("log.log", "w") as file:
+                     file.truncate()
+                logging.info('The Node has started')
+
