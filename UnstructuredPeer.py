@@ -70,4 +70,6 @@ if __name__ == '__main__':
                 with open("log.log", "w") as file:
                      file.truncate()
                 logging.info('The Node has started')
+		Register()
+
 
