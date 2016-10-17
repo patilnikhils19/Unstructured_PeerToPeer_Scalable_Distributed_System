@@ -98,7 +98,38 @@ def thread(sock):
                       if data1 :
                          t1 = time.time()
                         # print data1
-
+                         if (data1.find("JOIN") != -1 and data1.find("OK")== -1):
+                            data1 = data1.split()
+                            ip = data1[2]
+                            logging.info('IP requested  to join')
+                            logging.info(ip)
+                            print "ip requested to join" + ip
+                            port = data1[3]
+                            port = int(port)
+                            addr = (ip,port)
+                            number = table.getLen() +1
+                         #  print number
+                            table.addRow({'Index': number,'IP': ip, 'Port': port})
+                            row = table.getrowbyindex(number-1)
+                            logging.info('New IP joining added to the routing table')
+                            logging.info(row)
+                        #    print "row added" 
+                        #    print row
+                            protocol = "JOINOK"
+                            List = [protocol,0]
+                            List = ' '.join(map(str, List))
+                            a = len(List)+5
+                            c = "{0:0=4d}".format(a)
+                            List1 = [c,protocol,0]
+                            List1 = ' '.join(map(str, List1))
+                            out  = str(List1)
+                            sock.sendto(out, addr)
+                            logging.info(out)
+                            logging.info('Response send for the join')
+                        #    print ("join response send")
+                            t2 = time.time()
+                            Delay_Join = t2-t1
+                            logging.info('Delay time for serving join request\t' + str(Delay_Join))
 
 if __name__ == '__main__':
 
