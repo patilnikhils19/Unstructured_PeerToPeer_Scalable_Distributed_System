@@ -86,6 +86,20 @@ def Register():
        logging.info('Registration failed with the bootstrap')
 
 
+def thread(sock):
+
+                while True:
+                     # print "ready to accept data"
+                      logging.info('Thread is accepting request')
+                      data1, address = sock.recvfrom(1024)
+                      logging.info('New request recieved')
+                      logging.info(data1)
+                     # print "data"+ data1
+                      if data1 :
+                         t1 = time.time()
+                        # print data1
+
+
 if __name__ == '__main__':
 
           parser = argparse.ArgumentParser()#Define argument parser
