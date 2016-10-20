@@ -86,6 +86,79 @@ def Register():
        logging.info('Registration failed with the bootstrap')
 
 
+
+def clientserver():
+               #print routing table
+               # m = table.getTable()
+               # print m
+               while True: 
+                       string = raw_input(">>")
+                       print string
+                       if (string == 'genquery()'):
+                          genquery()
+                          with open("Resources.txt", "r") as source:
+                               arr = []
+                               for line in source:
+                                   arr.append(line)
+                          s = 0
+                          global flag
+                          while True:
+                            if (s<len(arr)):
+                              # if (flag == 0):
+                            	  string = arr[s]
+                                  print "Query is:"
+                                  print string
+                            	  resource = string
+                             	  search(resource,host1,port1)
+                             	  s= s+1
+                                  time.sleep(1)
+                                  flag = 1
+                            else:
+                                  logging.info('Lattencies are')
+                                  logging.info(LAT)
+                                  logging.info('Hop counts are')
+                                  logging.info(HOP)
+                                  logging.info('Delay time is')
+                                  logging.info(DELE)
+
+                                  f = open('Lat.txt','w')
+                                  x = 0
+                                  while (x<len(LAT)):
+                                        f.write(str(LAT[x]))
+                                        x = x+1
+                                  f.close()
+                      		 
+
+                                  break
+                   
+
+                       elif (string != 'exit()' and string != 'genquery()'):  
+                          resource = string
+                          search(resource,host1,port1)
+                                                               
+                       elif (string == 'exit()'):
+                           logging.info('exit() request recieved')
+                           length = table.getLen()
+                         # print length
+                           j = 1
+                           while (j <= length):
+                                      NodeIp = table.getIp(j-1)
+                                      NodePort = table.getPort(j-1)
+                                      NodePort = int(NodePort)
+                                      Node = (NodeIp,NodePort)
+                                      protocol = "LEAVE"
+                                      List = [protocol,host1,port1]
+                                      List = ' '.join(map(str, List))
+                                      a = len(List)+5
+                                      c = "{0:0=4d}".format(a)
+                                      List1 = [c,protocol,host1,port1]
+                                      List1 = ' '.join(map(str, List1))
+                                      List1 = str(List1)
+                                      sock.sendto(List1, Node)#Send Leave Request to Node
+                                      logging.info('Leave request send to Routing table node' + List1)
+                                      j = j + 1
+                
+
 def thread(sock):
 
                 while True:
@@ -178,5 +251,7 @@ if __name__ == '__main__':
                 logging.info('The Node has started')
 		Register()
 		start_new_thread(thread,(sock,)) #Create new threads for connecting clients
+		clientserver()
+
 
 
