@@ -22,7 +22,67 @@ class Table(object):
 
     def getrowbyindex(self, Index):
         return self.rows[Index]
+    def getIp(self, Index):
+        d = self.rows[Index]
+        ip = d.get('IP')
+        return ip
 
+    def getPort(self, Index):
+        d = self.rows[Index]
+        port = d.get('Port')
+        return port
+
+    def getResource(self, Index):
+        d = self.rows[Index]
+        resource = d.get('Resource')
+        return resource
+
+    def getLen(self):
+        l = len(self.rows)
+        return l
+    
+    def getTable(self):
+        m = self.rows
+        return m
+
+    def getTS(self, Index):
+        d = self.rows[Index]
+        t = d.get('TS')
+        return t
+
+    def delTable(self):
+        d = self.rows
+        del d[:]
+        self.rows = d
+
+    def getRemove(self, IP ,Port):
+        l = len(self.rows)
+        i = 0
+        while (i<l):
+            d = self.rows[i]
+            ip = d.get('IP')
+            ip = str(ip)
+            port = d.get('Port')
+            port = int(port)
+            if (IP == ip and port == Port):
+               j = i
+            i = i+1
+        del self.rows[j]
+        return j
+
+    def updateIndex(self, j):
+        l = len(self.rows)
+        while (j<l):
+            d = self.rows[j]
+            ip = d.get('IP')
+            port = d.get('Port')
+            index = d.get('Index')
+            index = int(index)
+            index = index -1
+            del self.rows[j]
+            row = {'Index': index,'IP': ip, 'Port': port}
+            self.rows.insert(j,row)
+            j = j+1
 
 def Register():
 
