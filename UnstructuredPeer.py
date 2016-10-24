@@ -84,6 +84,53 @@ class Table(object):
             self.rows.insert(j,row)
             j = j+1
 
+
+
+
+def genquery():
+    N = 160
+    s = raw_input("s>>")
+    s =float(s)
+    Ns = raw_input("Ns>>")
+    Ns = int(Ns)
+    n = int(1)
+    k = int(1)
+    p = 0.0
+    b = []
+    while (k <= 160):
+          a = 0.0
+          a = (1/pow(k,s))
+          while(n<=N):
+                p = p +(1/pow(n,s))
+                n = n +1
+          b.append((a/p))
+          k = k+1
+    logging.info('This message should go to the log file')
+    j = 0
+    print sum(b)
+    while (j<len(b)):
+          b[j] =round(b[j]*Ns)
+          if (b[j] == 0):
+             b[j] = 1
+          j = j+1
+   # print b
+   # print sum(b)
+    logging.info('the data is as next\t'+ str(b))
+    f = open('Resources.txt','w')
+    with open("resourcesq.txt", "r") as source:
+         array = []
+         for line in source:
+             array.append(line)
+         x = 0
+         while (x<len(b)):
+               i = 0
+               while (i<b[x]):
+                     f.write(array[x])
+                     i = i + 1
+               x = x+1
+    f.close()
+
+
 def Register():
 
     
