@@ -131,6 +131,33 @@ def genquery():
     f.close()
 
 
+def join(number):
+
+    logging.info('Joining with the nodes')
+    NodeIp = table.getIp(number-1)
+    NodePort = table.getPort(number-1)
+    NodePort = int(NodePort)
+    Node = (NodeIp,NodePort)
+    protocol = "JOIN"
+    List = [protocol,host1,port1]
+    List = ' '.join(map(str, List))
+    a = len(List)+5
+    c = "{0:0=4d}".format(a)
+    List1 = [c,protocol,host1,port1]
+    List1 = ' '.join(map(str, List1))
+    List1 = str(List1)
+    logging.info('Joining with the node')
+    logging.info(str(List1))
+    print List1
+    print ("Joining with the Node\n" + str(NodeIp))
+    sock.sendto(List1, Node)#Send Request to Node
+    print "Joining Request send"
+   # data, address = sock.recvfrom(1024)#Recieve data from Node
+   # logging.info('Recieved response from the node for joining')
+   # logging.info(str(data))
+    #print "The response from the Node\n" + str(data)
+
+
 def Register():
 
     
