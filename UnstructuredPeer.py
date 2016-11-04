@@ -391,6 +391,210 @@ def thread(sock):
                             t2 = time.time()
                             Delay_Join = t2-t1
                             logging.info('Delay time for serving join request\t' + str(Delay_Join))
+                         elif (data1.find("SER")!= -1 and data1.find("OK")== -1):
+                           # print "searching..."
+                            logging.info('Search request recieved')
+                            data1 = data1.split()
+                           # resource = data1[6]
+                            i = 6
+                            r = ''
+                            while (i<len(data1)):
+                                  r = r + data1[i] +' '
+                                  i = i + 1
+                            resource = r[:-1]
+                            ts = data1[5]
+                            ip = data1[2]
+                            port = data1[3]
+                            port = int(port)
+                            hopes = data1[4]
+                            hopes = int(hopes)
+                          # n = table1.getTable()
+                          # print "History table"
+                          # print n
+                            if (table1.getLen()==0):
+                                  if (hopes < 4):
+                                      l = []
+                                      find(resource,l)
+                                      no_file = len(l)
+                                      if (no_file!=0):
+                                           protocol = "SEROK"
+                                           hopes = hopes+1
+                                           List = [protocol,no_file,host1,port1,hopes]
+                                           List.extend(l)
+                                           List = ' '.join(map(str, List))
+                                           a = len(List)+5
+                                           c = "{0:0=4d}".format(a)
+                                           List1 = [c,List]
+                                           List1 = ' '.join(map(str, List1))
+                                           output = str(List1)
+                                           sock.sendto(output,(ip,port))
+                                           logging.info('Resources found sending search response' + output)
+                                      else:
+                                           length = table.getLen()
+                                           j = 1
+                                           hopes = hopes +1
+                                           while (j <= length):
+                          
+                                               NodeIp = table.getIp(j-1)
+                                               NodePort = table.getPort(j-1)
+                                               NodePort = int(NodePort)
+                                               Node = (NodeIp,NodePort)
+                                               protocol = "SER"
+                                               List = [protocol,ip,port,hopes,ts,resource]
+                                               List = ' '.join(map(str, List))
+                                               a = len(List)+5
+                                               c = "{0:0=4d}".format(a)
+                                               List1 = [c,protocol,ip,port,hopes,ts,resource]
+                                               List1 = ' '.join(map(str, List1))
+                                               List1 = str(List1)
+                                               sock.sendto(List1, Node)#Send Search Request to Node 
+                                               j = j + 1
+                                               logging.info('Search request forwarded' + List1)
+                                      table1.addRow({'IP': ip, 'Port': str(port), 'Resource': resource, 'TS': str(ts)})
+                                  else:
+                                      flag = 0
+                                      logging.info('Search request droped for exceeding hope count')     
+                            else:       
+                               n = table1.getLen()
+                               if (table1.getIp(n-1)!=ip or table1.getPort(n-1)!=str(port) or table1.getResource(n-1)!=resource or table1.getTS(n-1)!=str(ts)):
+                             
+                                  if (hopes < 4):
+                                      l = []
+                                      find(resource,l)
+                                      no_file = len(l)
+                                      if (no_file!=0):
+                                           protocol = "SEROK"
+                                           hopes = hopes+1
+                                           List = [protocol,no_file,host1,port1,hopes]
+                                           List.extend(l)
+                                           List = ' '.join(map(str, List))
+                                           a = len(List)+5
+                                           c = "{0:0=4d}".format(a)
+                                           List1 = [c,List]
+                                           List1 = ' '.join(map(str, List1))
+                                           output = str(List1)
+                                           sock.sendto(output,(ip,port))
+                                           logging.info('Resources found sending search response' + output)
+                                      else:
+                                      
+                                           length = table.getLen()
+                                           j = 1
+                                           hopes = hopes +1
+                                           while (j <= length):
+                                               NodeIp = table.getIp(j-1)
+                                               NodePort = table.getPort(j-1)
+                                               NodePort = int(NodePort)
+                                               Node = (NodeIp,NodePort)
+                                               protocol = "SER"
+                                               List = [protocol,ip,port,hopes,ts,resource]
+                                               List = ' '.join(map(str, List))
+                                               a = len(List)+5
+                                               c = "{0:0=4d}".format(a)
+                                               List1 = [c,protocol,ip,port,hopes,ts,resource]
+                                               List1 = ' '.join(map(str, List1))
+                                               List1 = str(List1)
+                                               sock.sendto(List1, Node)#Send Search Request to Node 
+                                               j = j + 1
+                                               logging.info('Search request forwarded' + List1)
+                                      table1.delTable()
+                                      table1.addRow({'IP': ip, 'Port': str(port), 'Resource': resource, 'TS': str(ts)})
+                                  else:
+                                      flag = 0
+                                      logging.info('Request dropped for exceeding hops count')
+                               else:
+                                   logging.info('Request dropped because of duplicate request')  
+                            t2 = time.time()
+                            Delay_Search = t2-t1
+                            DELE.append(Delay_Search)
+                            logging.info('Delay time for processing this search request\t' + str(Delay_Search))
+
+                         elif (data1.find("SER")!= -1 and data1.find("OK")!= -1):
+                            logging.info('Search response recieved')
+                            data1 = data1.split()
+                            global T2
+                            T2 = time.time()
+                            Lattency = T2-T1
+                            logging.info('Lattency for the recieved response' + str(Lattency))
+                            print "Lattency for search\t" + str(Lattency)
+                            LAT.append(Lattency)
+                            no_file = data1[2]
+                            ip = data1[3]
+                            port = data1[4]
+                            hopes = data1[5]
+                            resources = data1[6:]
+                            #print str(data1)
+                            logging.info('Resources found at \t' + str(ip))
+                            logging.info('Resource found at port number\t' + str(port))
+                            logging.info('Number of hops\t' + str(hopes))
+                            logging.info('number of resource at this node\t' + str(no_file))
+                            logging.info('resource names')
+                            a = ' '.join(resources)
+                            logging.info(a)
+                            print "Resources found at ip and port\t"
+                            print ip 
+                            print port 
+                            print "Number of hops required"
+                            print hopes
+                            HOP.append(hopes)
+                            print "Number of resources"
+                            print no_file
+                            print "Resource name"
+                            print ' '.join(resources)
+                           # global flag
+                            flag = 0
+                          
+
+                         elif (data1.find("LEAVE")!= -1 and data1.find("OK")== -1):
+                            logging.info('Leave request recieved')
+                            data1 = data1.split()
+                            IP = data1[2]
+                            IP = str(IP)
+                            PORT = data1[3]
+                            PORT = int(PORT)
+                            a = table.getRemove(IP,PORT)
+                            table.updateIndex(a)
+                            Node = (IP,PORT)
+                            protocol = "LEAVEOK 0"
+                            List = [protocol]
+                            List = ' '.join(map(str, List))
+                            a = len(List)+5
+                            c = "{0:0=4d}".format(a)
+                            List1 = [c,protocol]
+                            List1 = ' '.join(map(str, List1))
+                            List1 = str(List1)
+                            sock.sendto(List1, Node)#Send Leave Ok Response to Node 
+                            logging.info(List1)
+                            logging.info('Leave ok response send')
+                            t2 = time.time()
+                           
+                         elif (data1.find("EOK 0")!= -1 and data1.find("DEL")== -1):
+                            length = table.getLen()
+                            count = 0
+                            count = count + 1
+                            print "Leave ok recieved deleting IP with bootstrap"
+                            if (count != 0):
+                                  protocol = "DEL IPADDRESS"
+                                  List = [protocol,args.bootstrapip,args.bootstrapport]
+                                  List = ' '.join(map(str, List))
+                                  a = len(List)+5
+                                  c = "{0:0=4d}".format(a)
+                                  List1 = [c,protocol,args.bootstrapip,args.bootstrapport]
+                                  List1 = ' '.join(map(str, List1))
+                                  List1 = str(List1)
+                                  sock.sendto(List1, (args.bootstrapip,args.bootstrapport))
+                                  logging.info('sending delete request to bootstrap')
+                                  logging.info(List1)
+                            t2 = time.time()
+                            
+                         elif (data1.find("DEL IPADDRESS OK")!= -1):
+                              logging.info('Node is shutting down, Good Bye')
+                              print "IP deleted, Node is shutting down, Good Bye"
+                              os._exit(1)  
+                              t2 = time.time()
+
+                      data1 = None 
+
+
 
 if __name__ == '__main__':
 
