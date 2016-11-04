@@ -219,6 +219,60 @@ def Register():
        print "Regisration with Bootstrap Server is unsuccessful, Please try again!\n"
        logging.info('Registration failed with the bootstrap')
 
+    
+def find(resource, l):
+    with open("resources.txt", "r") as file:
+    # datafile = file('resources.txt')
+     for line in file:
+         if resource in line:
+            l.append(line)
+           # return True
+   #  return False
+
+
+def search(resource,host1,port1):
+
+    ts = time.time()
+    global T1 
+    T1 =  ts
+    l = []
+    find(resource,l)
+    no_file = len(l)
+    if (no_file!=0):
+        print "Resource found on this machine\n" 
+        print  self
+        print "number of resources\t"
+        print  no_file
+        print  l
+        #po = int(port1)
+        table1.addRow({'IP': host1, 'Port':str(port1), 'Resource': resource, 'TS': str(ts)})
+    if (no_file != 0 or no_file == 0):
+         
+        length = table.getLen()
+        # print length
+        j = 1
+        while (j <= length):
+             
+              NodeIp = table.getIp(j-1)
+              NodePort = table.getPort(j-1)
+              NodePort = int(NodePort)
+              Node = (NodeIp,NodePort)
+              protocol = "SER"
+              hopes = 0
+              #ts = time.time()
+              List = [protocol,host1,port1,hopes,ts,resource]
+              List = ' '.join(map(str, List))
+              a = len(List)+5
+              c = "{0:0=4d}".format(a)
+              List1 = [c,protocol,host1,port1,hopes,ts,resource]
+              List1 = ' '.join(map(str, List1))
+              List1 = str(List1)
+              # print "forwarding following search request"
+              # print List1
+              sock.sendto(List1, Node)#Send Search Request to Node
+              logging.info('Forwarding Search Request \t' + List1 )
+              # print "Request send" 
+              j = j + 1
 
 
 def clientserver():
